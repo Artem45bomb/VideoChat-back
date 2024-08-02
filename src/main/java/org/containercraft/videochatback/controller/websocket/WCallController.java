@@ -25,7 +25,6 @@ public class WCallController {
     @MessageMapping("/call")
     @SendTo("/topic/call")
     public Call call(@Payload Call call){
-        log.info("signal:call");
         call.setWhoIsCalling(userService.findById(call.getWhoIsCalling().getId()));
         call.setWhoIsConnect(userService.findById(call.getWhoIsConnect().getId()));
         return service.save(call);
@@ -34,15 +33,12 @@ public class WCallController {
     @MessageMapping("/call/connect")
     @SendTo("/topic/call/connect")
     public Call callConnect(@Payload Call dto){
-        log.info("signal:connect");
-        log.info("dto:{}",dto);
         return service.findById(dto.getId());
     }
 
     @MessageMapping("/call/disconnect")
     @SendTo("/topic/call/disconnect")
     public DisconnectCallDTO callSnuggle(@Payload DisconnectCallDTO dto){
-        log.info("signal:disconnect");
         if(service.existById(dto.getCallId())) {
             service.deleteById(dto.getCallId());
         }
